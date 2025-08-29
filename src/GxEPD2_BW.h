@@ -348,24 +348,27 @@ class GxEPD2_BW : public GxEPD2_GFX_BASE_CLASS
     // initial false for re-init after processor deep sleep wake up, if display power supply was kept
     // this can be used to avoid the repeated initial full refresh on displays with fast partial update
     // NOTE: garbage will result on fast partial update displays, if initial full update is omitted after power loss
-    // re-init method may give better results for temporary or second displays after power loss
-    void init(uint32_t serial_diag_bitrate, bool initial, uint16_t reset_duration = 0, bool pulldown_rst_mode = false, bool pulldown_cs_mode = false)
+    // reset_duration = 10 is default; a value of 2 may help with "clever" reset circuit of newer boards from Waveshare
+    // pulldown_rst_mode true for alternate RST handling to avoid feeding 5V through RST pin
+    void init(uint32_t serial_diag_bitrate, bool initial, uint16_t reset_duration = 10, bool pulldown_rst_mode = false)
     {
-      epd2.init(serial_diag_bitrate, initial, reset_duration, pulldown_rst_mode, pulldown_cs_mode);
+      epd2.init(serial_diag_bitrate, initial, reset_duration, pulldown_rst_mode);
       _using_partial_mode = false;
       _current_page = 0;
       setFullWindow();
     }
 
-    // initial is for symmetry, not used
-    void init(uint32_t serial_diag_bitrate, bool initial, uint16_t reset_duration, bool pulldown_rst_mode, bool pulldown_cs_mode, int8_t busy_level)
+    // init method with additional parameters:
+    // SPIClass& spi: either SPI or alternate HW SPI channel
+    // SPISettings spi_settings: e.g. for higher SPI speed selection
+    void init(uint32_t serial_diag_bitrate, bool initial, uint16_t reset_duration, bool pulldown_rst_mode, SPIClass& spi, SPISettings spi_settings)
     {
-      epd2.init(serial_diag_bitrate, initial, reset_duration, pulldown_rst_mode, pulldown_cs_mode, busy_level);
+      epd2.selectSPI(spi, spi_settings);
+      epd2.init(serial_diag_bitrate, initial, reset_duration, pulldown_rst_mode);
       _using_partial_mode = false;
       _current_page = 0;
       setFullWindow();
     }
-
     void setRotation(uint8_t r)
     {
       GxEPD2_GFX_BASE_CLASS::setRotation(r);
