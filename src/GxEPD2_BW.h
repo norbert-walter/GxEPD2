@@ -241,9 +241,9 @@ class GxEPD2_BW : public GxEPD2_GFX_BASE_CLASS
   public:
     GxEPD2_Type epd2;
 #if ENABLE_GxEPD2_GFX
-    GxEPD2_BW(GxEPD2_Type epd2_instance) : GxEPD2_GFX_BASE_CLASS(epd2, GxEPD2_Type::WIDTH_VISIBLE, GxEPD2_Type::HEIGHT), epd2(epd2_instance)
+    GxEPD2_BW(GxEPD2_Type epd2_instance) : GxEPD2_GFX_BASE_CLASS(GxEPD2_Type::WIDTH, GxEPD2_Type::HEIGHT, GxEPD2_Type::WIDTH_VISIBLE, GxEPD2_Type::HEIGHT), epd2(epd2_instance)
 #else
-    GxEPD2_BW(GxEPD2_Type epd2_instance) : GxEPD2_GFX_BASE_CLASS(GxEPD2_Type::WIDTH_VISIBLE, GxEPD2_Type::HEIGHT), epd2(epd2_instance)
+    GxEPD2_BW(GxEPD2_Type epd2_instance) : GxEPD2_GFX_BASE_CLASS(GxEPD2_Type::WIDTH, GxEPD2_Type::HEIGHT, GxEPD2_Type::WIDTH_VISIBLE, GxEPD2_Type::HEIGHT), epd2(epd2_instance)
 #endif
     {
       _page_height = page_height;
